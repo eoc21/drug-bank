@@ -28,7 +28,11 @@ class DrugBankExtractor(object):
         pass
 
     def extract_structured_indications(self, drug_id):
-        html = requests.get(self.base_url+drug_id).text
+        try:
+            html = requests.get(self.base_url+drug_id).text
+        except requests.exceptions.RequestException as e:
+            print("error with call")
+            return
         start_pt = html.find(self.start)
         end_pt = html.find(self.end)
         subset = html[start_pt:end_pt].split('</a>')
@@ -41,4 +45,3 @@ class DrugBankExtractor(object):
 
 if __name__ == '__main__':
     pass
-
